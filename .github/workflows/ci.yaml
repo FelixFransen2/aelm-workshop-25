@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - '**'
+  release:
+    types: [created]
+
 
 # These variables can be reused in the build steps
 env:
@@ -56,6 +59,8 @@ jobs:
         id: meta
         with:
           images: ${{env.DOCKER_REPOSITORY}}/${{env.DOCKER_IMAGE}}
+          tags: |
+            type=semver,pattern={{ GITHUB_REF }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
